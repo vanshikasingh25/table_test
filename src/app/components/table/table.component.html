@@ -1,92 +1,103 @@
 <p-card>
-  <div class="p-grid p-fluid">
+  <div class="main-container p-grid p-fluid">
     <!-- Attack Type Selection -->
-    <div class="p-col-12">
-      <h3>CBRNE</h3>
-      <p-radiobutton
-        name="type"
-        value="Chemical"
-        [(ngModel)]="newRecord.typeofattacks"
-        inputId="type1"
-      />
-      <label for="type1" class="ml-2">Chemical</label>
-      <p-radiobutton
-        name="type"
-        value="Biological"
-        [(ngModel)]="newRecord.typeofattacks"
-        inputId="type1"
-      />
-      <label for="type1" class="ml-2">Biological</label>
-      <p-radiobutton
-        name="type"
-        value="Radiological"
-        [(ngModel)]="newRecord.typeofattacks"
-        inputId="type1"
-      />
-      <label for="type1" class="ml-2">Radiological</label>
-      <p-radiobutton
-        name="type"
-        value="Nuclear"
-        [(ngModel)]="newRecord.typeofattacks"
-        inputId="type1"
-      />
-      <label for="type1" class="ml-2">Nuclear</label>
-      <p-radiobutton
-        name="type"
-        value="High Explosive"
-        [(ngModel)]="newRecord.typeofattacks"
-        inputId="type1"
-      />
-      <label for="type1" class="ml-2">High Explosive</label>
+    <h3 class="heading">CBRNE</h3>
+    <div class="radio-container">
+      <div class="radio-box">
+        <p-radiobutton
+          name="type"
+          value="Chemical"
+          [(ngModel)]="newRecord.typeofattacks"
+          inputId="chemical"
+        />
+        <label for="chemical" class="ml-2">Chemical</label>
+      </div>
+      <div class="radio-box">
+        <p-radiobutton
+          name="type"
+          value="Biological"
+          [(ngModel)]="newRecord.typeofattacks"
+          inputId="biological"
+        />
+        <label for="biological" class="ml-2">Biological</label>
+      </div>
+      <div class="radio-box">
+        <p-radiobutton
+          name="type"
+          value="Radiological"
+          [(ngModel)]="newRecord.typeofattacks"
+          inputId="radiological"
+        />
+        <label for="radiological" class="ml-2">Radiological</label>
+      </div>
+      <div class="radio-box">
+        <p-radiobutton
+          name="type"
+          value="Nuclear"
+          [(ngModel)]="newRecord.typeofattacks"
+          inputId="nuclear"
+        />
+        <label for="nuclear" class="ml-2">Nuclear</label>
+      </div>
+      <div class="radio-box">
+        <p-radiobutton
+          name="type"
+          value="High Explosive"
+          [(ngModel)]="newRecord.typeofattacks"
+          inputId="hExplosive"
+        />
+        <label for="hExplosive" class="ml-2">High Explosive</label>
+      </div>
     </div>
 
     <!-- Agent Selection -->
-    <div class="p-col-6">
-      <p-dropdown
+    <div class="agent-container">
+      <p-select
         [options]="agentsList"
         [(ngModel)]="newRecord.agents"
         placeholder="Select Agent Type"
-      ></p-dropdown>
-    </div>
-
-    <!-- Date & Time -->
-    <div class="p-col-6">
-      <p-calendar
+      ></p-select>
+      <!-- Date & Time -->
+      <p-datepicker
         [(ngModel)]="newRecord.dateTime"
-        showtime
-        hourFormat="24"
-      ></p-calendar>
-    </div>
-
-    <!-- Payload and Location -->
-    <div class="p-col-6">
-      <input
-        type="number"
-        pInputText
-        [(ngModel)]="newRecord.payload"
-        placeholder="Payload (Kg)"
+        [showOnFocus]="false"
+        [showIcon]="true"
+        [iconDisplay]="'input'"
       />
-    </div>
-    <div class="p-col-6">
+      <!--  Location -->
       <input
         type="text"
         pInputText
         [(ngModel)]="newRecord.location"
         placeholder="Location (Lat, Long)"
       />
+      <!-- Payload -->
+      <p-select
+        [options]="payloadList"
+        [(ngModel)]="newRecord.payload"
+        placeholder="Payload (Kg)"
+      ></p-select>
+      <!-- Deliever by -->
+      <p-select
+        [options]="delieverByList"
+        [(ngModel)]="newRecord.delieverBy"
+        placeholder="Deliever By"
+      ></p-select>
     </div>
 
     <!-- Remarks -->
-    <div class="p-col-12">
+    <div class="">
       <textarea
-        pInputTextarea
+        rows="5"
+        cols="30"
+        pTextarea
         [(ngModel)]="newRecord.remarks"
         placeholder="Remarks"
       ></textarea>
     </div>
 
     <!-- Submit & Cancel Buttons -->
-    <div class="p-col-12">
+    <div class="">
       <button type="button" (click)="addRecord()">Submit</button>
       <button type="button" class="p-button-secondary">Cancel</button>
     </div>
