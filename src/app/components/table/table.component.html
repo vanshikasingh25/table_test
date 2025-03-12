@@ -3,39 +3,86 @@
     <!-- Attack Type Selection -->
     <div class="p-col-12">
       <h3>CBRNE</h3>
-      <p-radiobutton name="type" value="Chemical"  [(ngModel)]="newRecord.typeofattacks" inputId="type1" />
-        <label for="type1" class="ml-2">Chemical</label>
-        <p-radiobutton name="type" value="Biological"  [(ngModel)]="newRecord.typeofattacks" inputId="type1" />
-        <label for="type1" class="ml-2">Biological</label>
-        <p-radiobutton name="type" value="Radiological"  [(ngModel)]="newRecord.typeofattacks" inputId="type1" />
-        <label for="type1" class="ml-2">Radiological</label>
-        <p-radiobutton name="type" value="Nuclear"  [(ngModel)]="newRecord.typeofattacks" inputId="type1" />
-        <label for="type1" class="ml-2">Nuclear</label>
-      <p-radiobutton name="type" value="High Explosive"  [(ngModel)]="newRecord.typeofattacks" inputId="type1" />
-        <label for="type1" class="ml-2">High Explosive</label>
+      <p-radiobutton
+        name="type"
+        value="Chemical"
+        [(ngModel)]="newRecord.typeofattacks"
+        inputId="type1"
+      />
+      <label for="type1" class="ml-2">Chemical</label>
+      <p-radiobutton
+        name="type"
+        value="Biological"
+        [(ngModel)]="newRecord.typeofattacks"
+        inputId="type1"
+      />
+      <label for="type1" class="ml-2">Biological</label>
+      <p-radiobutton
+        name="type"
+        value="Radiological"
+        [(ngModel)]="newRecord.typeofattacks"
+        inputId="type1"
+      />
+      <label for="type1" class="ml-2">Radiological</label>
+      <p-radiobutton
+        name="type"
+        value="Nuclear"
+        [(ngModel)]="newRecord.typeofattacks"
+        inputId="type1"
+      />
+      <label for="type1" class="ml-2">Nuclear</label>
+      <p-radiobutton
+        name="type"
+        value="High Explosive"
+        [(ngModel)]="newRecord.typeofattacks"
+        inputId="type1"
+      />
+      <label for="type1" class="ml-2">High Explosive</label>
     </div>
-   
+
     <!-- Agent Selection -->
     <div class="p-col-6">
-      <p-dropdown [options]="agentsList" [(ngModel)]="newRecord.agents" placeholder="Select Agent Type"></p-dropdown>
+      <p-dropdown
+        [options]="agentsList"
+        [(ngModel)]="newRecord.agents"
+        placeholder="Select Agent Type"
+      ></p-dropdown>
     </div>
 
     <!-- Date & Time -->
     <div class="p-col-6">
-      <p-calendar [(ngModel)]="newRecord.dateTime" showtime hourFormat="24"></p-calendar>
+      <p-calendar
+        [(ngModel)]="newRecord.dateTime"
+        showtime
+        hourFormat="24"
+      ></p-calendar>
     </div>
 
     <!-- Payload and Location -->
     <div class="p-col-6">
-      <input type="number" pInputText [(ngModel)]="newRecord.payload" placeholder="Payload (Kg)" />
+      <input
+        type="number"
+        pInputText
+        [(ngModel)]="newRecord.payload"
+        placeholder="Payload (Kg)"
+      />
     </div>
     <div class="p-col-6">
-      <input type="text" pInputText [(ngModel)]="newRecord.location" placeholder="Location (Lat, Long)" />
+      <input
+        type="text"
+        pInputText
+        [(ngModel)]="newRecord.location"
+        placeholder="Location (Lat, Long)"
+      />
     </div>
 
     <!-- Remarks -->
     <div class="p-col-12">
-      <textarea pInputTextarea [(ngModel)]="newRecord.remarks" placeholder="Remarks"></textarea>
+      <textarea
+        pInputTextarea
+        [(ngModel)]="newRecord.remarks"
+        placeholder="Remarks"
+      ></textarea>
     </div>
 
     <!-- Submit & Cancel Buttons -->
@@ -47,7 +94,13 @@
 </p-card>
 
 <!-- Data Table -->
-<p-table #dt [value]="records" [paginator]="true" [rows]="5" [responsiveLayout]="'scroll'">
+<p-table
+  #dt
+  [value]="records"
+  [paginator]="true"
+  [rows]="5"
+  [responsiveLayout]="'scroll'"
+>
   <ng-template pTemplate="header">
     <tr>
       <th>Type of Attack</th>
@@ -62,14 +115,22 @@
     <tr>
       <td>{{ record.typeofattacks }}</td>
       <td>{{ record.agents }}</td>
-      <td>{{ record.dateTime | date:'short' }}</td>
+      <td>{{ record.dateTime | date : "short" }}</td>
       <td>{{ record.payload }}</td>
       <td>{{ record.location }}</td>
       <td>
-        <button type="button" class="p-button-warning" (click)="editRecord(record)">
+        <button
+          type="button"
+          class="p-button-warning"
+          (click)="editRecord(record)"
+        >
           <i class="pi pi-pencil"></i>
         </button>
-        <button type="button" class="p-button-danger" (click)="deleteRecord(record.id)">
+        <button
+          type="button"
+          class="p-button-danger"
+          (click)="deleteRecord(record.id)"
+        >
           <i class="pi pi-trash"></i>
         </button>
       </td>
