@@ -35,7 +35,7 @@ import { AttackTableService } from '../../services/attack-table.service';
 })
 export class TableComponent implements OnInit {
   records: any[] = [];
-  newRecord: any = { typeofattacks: '', agents: '', dateTime: '', payload: '', location: '', remarks: '' };
+  newRecord: any = { typeofattacks: '', agents: '', dateTime: '', payload: '', location: '', remarks: '', delieverBy: '' };
   agentsList = [
     { label: 'VX Gas', value: 'VX Gas' },
     { label: 'Sarin', value: 'Sarin' },
@@ -73,7 +73,7 @@ export class TableComponent implements OnInit {
   addRecord(): void {
     this.attackTableService.addRecord(this.newRecord).subscribe(() => {
       this.loadRecords();
-      this.newRecord = { typeofattacks: '', agents: '', dateTime: '', payload: '', location: '', remarks: '' };
+      this.newRecord = { typeofattacks: '', agents: '', dateTime: '', payload: '', location: '', remarks: '', delieverBy: '' };
     });
   }
 
@@ -87,8 +87,7 @@ export class TableComponent implements OnInit {
     });
   }
 
-  // ✅ Adding a sample function to avoid `fn is not a function` errors
-  fn(): void {
-    console.log('fn function is now defined!');
+  reset(): void {
+    this.newRecord = { typeofattacks: '', agents: '', dateTime: '', payload: '', location: '', remarks: '', delieverBy: '' };
   }
 }
