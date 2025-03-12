@@ -1,0 +1,17 @@
+.codered 
+{
+    color: blue;
+    text-align: left ;
+    padding: 0%;
+    border-right: 0%;
+    width: fit-content;
+    
+}
+
+.error {
+    background-color: red;
+    text-align: left ;
+    padding: 0%;
+    border-right: 0%;
+    text-emphasis-color: red;
+}
