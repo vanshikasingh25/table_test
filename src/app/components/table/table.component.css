@@ -1,37 +1,67 @@
 .table-container {
-    max-width: 800px;
-    margin: 20px auto;
-    text-align: left;
-  }
-  
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #faebf4;
-  }
-  
-  th, td {
-    border: 1px solid #580c3d;
-    padding: 8px;
-    background-color: #faebf4;
-  }
-  
-  th {
-    background-color: #faebf4;
-  }
-  
-  button { 
-    margin: 2px;
-    padding: 5px 10px;
-    cursor: pointer;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    background-color: #580c3d;
-  }
+  max-width: 800px;
+  margin: 20px auto;
+  text-align: left;
+}
 
-  td {
-    vertical-align: top; /* Align text to the top */
-    white-space: nowrap;
-  }
-  
+/* table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #faebf4;
+}
+
+th,
+td {
+  border: 1px solid #580c3d;
+  padding: 8px;
+  background-color: #faebf4;
+}
+
+th {
+  background-color: #faebf4;
+} */
+
+button {
+  margin: 2px;
+  padding: 5px 10px;
+  cursor: pointer;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  background-color: #580c3d;
+}
+
+td {
+  vertical-align: top;
+  /* Align text to the top */
+  white-space: nowrap;
+}
+
+/*.  */
+.main-container{
+  display: flex;
+  flex-direction: column;
+ gap: 20px;
+}
+.heading{
+  text-align: center;
+  margin: 20px 0;
+  font-size: 20px;
+}
+.radio-container {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+.radio-box{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.agent-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 10px;
+}
