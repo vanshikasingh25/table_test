@@ -1,150 +1,83 @@
-<p-card>
-  <div class="main-container p-grid p-fluid">
-    <!-- Attack Type Selection -->
+<div class="container">
+  <div class="form-section">
     <h3 class="heading">CBRNE</h3>
-    <div class="radio-container">
-      <div class="radio-box">
-        <p-radiobutton
-          name="type"
-          value="Chemical"
-          [(ngModel)]="newRecord.typeofattacks"
-          inputId="chemical"
-        />
-        <label for="chemical" class="ml-2">Chemical</label>
-      </div>
-      <div class="radio-box">
-        <p-radiobutton
-          name="type"
-          value="Biological"
-          [(ngModel)]="newRecord.typeofattacks"
-          inputId="biological"
-        />
-        <label for="biological" class="ml-2">Biological</label>
-      </div>
-      <div class="radio-box">
-        <p-radiobutton
-          name="type"
-          value="Radiological"
-          [(ngModel)]="newRecord.typeofattacks"
-          inputId="radiological"
-        />
-        <label for="radiological" class="ml-2">Radiological</label>
-      </div>
-      <div class="radio-box">
-        <p-radiobutton
-          name="type"
-          value="Nuclear"
-          [(ngModel)]="newRecord.typeofattacks"
-          inputId="nuclear"
-        />
-        <label for="nuclear" class="ml-2">Nuclear</label>
-      </div>
-      <div class="radio-box">
-        <p-radiobutton
-          name="type"
-          value="High Explosive"
-          [(ngModel)]="newRecord.typeofattacks"
-          inputId="hExplosive"
-        />
-        <label for="hExplosive" class="ml-2">High Explosive</label>
+
+    <div class="form-group">
+      <div class="radio-container">
+        <div class="radio-box">
+          <ng-container *ngFor="let type of checkboxList">
+            <p-radiobutton [inputId]="type" name="attackType" [value]="type" [(ngModel)]="newRecord.selectedType"
+              (onClick)="onTypeChange()"></p-radiobutton>
+            <label [for]="type">{{ type | titlecase }}</label>
+          </ng-container>
+        </div>
       </div>
     </div>
 
-    <!-- Agent Selection -->
     <div class="agent-container">
-      <p-select
-        [options]="agentsList"
-        [(ngModel)]="newRecord.agents"
-        placeholder="Select Agent Type"
-      ></p-select>
-      <!-- Date & Time -->
-      <p-datepicker
-        [(ngModel)]="newRecord.dateTime"
-        [showOnFocus]="false"
-        [showIcon]="true"
-        [iconDisplay]="'input'"
-      />
-      <!--  Location -->
-      <input
-        type="text"
-        pInputText
-        [(ngModel)]="newRecord.location"
-        placeholder="Location (Lat, Long)"
-      />
-      <!-- Payload -->
-      <p-select
-        [options]="payloadList"
-        [(ngModel)]="newRecord.payload"
-        placeholder="Payload (Kg)"
-      ></p-select>
-      <!-- Deliever by -->
-      <p-select
-        [options]="delieverByList"
-        [(ngModel)]="newRecord.delieverBy"
-        placeholder="Deliever By"
-      ></p-select>
+      <div class="form-group">
+        <p-select [options]="filteredAgentsList" [(ngModel)]="newRecord.agents" placeholder="Select Agent Type"
+          class="dropdown" optionLabel="label"></p-select>
+      </div>
+
+      <div class="form-group">
+        <p-datepicker [(ngModel)]="newRecord.dateTime" hourFormat="24" class="calendar" [iconDisplay]="'input'" [showIcon]="true" inputId="icondisplay"></p-datepicker>
+      </div>
+
+      <div class="form-group">
+        <p-select [options]="payloadList" [(ngModel)]="newRecord.payload" placeholder="Select Payload" class="dropdown"
+          optionLabel="label"></p-select>
+      </div>
+
+      <div class="form-group">
+        <input pInputText type="text" [(ngModel)]="newRecord.location" class="input-text" placeholder="Location" />
+      </div>
+
+      <div class="form-group">
+        <p-select [options]="delieverByList" [(ngModel)]="newRecord.delieverBy" placeholder="Select Mode"
+          class="dropdown" optionLabel="label"></p-select>
+      </div>
+
+      <div class="form-group">
+        <textarea rows="5" cols="30" pTextarea [(ngModel)]="newRecord.remarks" placeholder="Remarks"></textarea>
+      </div>
     </div>
 
-    <!-- Remarks -->
-    <div class="">
-      <textarea
-        rows="5"
-        cols="30"
-        pTextarea
-        [(ngModel)]="newRecord.remarks"
-        placeholder="Remarks"
-      ></textarea>
-    </div>
-
-    <!-- Submit & Cancel Buttons -->
-    <div class="">
-      <button type="button" (click)="addRecord()">Submit</button>
-      <button type="button" class="p-button-secondary">Cancel</button>
-    </div>
+    <button type="button" (click)="addRecord()" class="btn-submit">Submit</button>
   </div>
-</p-card>
 
-<!-- Data Table -->
-<p-table
-  #dt
-  [value]="records"
-  [paginator]="true"
-  [rows]="5"
-  [responsiveLayout]="'scroll'"
->
-  <ng-template pTemplate="header">
-    <tr>
-      <th>Type of Attack</th>
-      <th>Agent</th>
-      <th>Date Time</th>
-      <th>Payload (Kg)</th>
-      <th>Location</th>
-      <th>Actions</th>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-record>
-    <tr>
-      <td>{{ record.typeofattacks }}</td>
-      <td>{{ record.agents }}</td>
-      <td>{{ record.dateTime | date : "short" }}</td>
-      <td>{{ record.payload }}</td>
-      <td>{{ record.location }}</td>
-      <td>
-        <button
-          type="button"
-          class="p-button-warning"
-          (click)="editRecord(record)"
-        >
-          <i class="pi pi-pencil"></i>
-        </button>
-        <button
-          type="button"
-          class="p-button-danger"
-          (click)="deleteRecord(record.id)"
-        >
-          <i class="pi pi-trash"></i>
-        </button>
-      </td>
-    </tr>
-  </ng-template>
-</p-table>
+  <!-- Data Table -->
+  <p-table #dt [value]="records" [paginator]="true" [rows]="5" [responsiveLayout]="'scroll'" class="data-table">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Type of Attack</th>
+        <th>Agent</th>
+        <th>Date Time</th>
+        <th>Payload (Kg)</th>
+        <th>Location</th>
+        <th>Actions</th>
+      </tr>
+    </ng-template>
+  
+    <ng-template pTemplate="body" let-record>
+      <tr>
+        <td>{{ record.typeofattacks }}</td>
+        <td>{{ record.agents.label }}</td>
+        <td>{{ record.dateTime | date : "short" }}</td>
+        <td>{{ record.payload.label }}</td>
+        <td>{{ record.location }}</td>
+        <td>
+          <button type="button" class="btn-edit" (click)="editRecord(record)">
+            Edit
+          </button>
+          <button type="button" class="btn-delete" (click)="deleteRecord(record.id)">
+            Delete
+          </button>
+          <button type="button" class="btn-delete" (click)="next()">
+            Next
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
