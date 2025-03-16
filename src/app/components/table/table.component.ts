@@ -14,6 +14,8 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AttackTableService } from '../../services/attack-table.service';
 
+type AttackType = 'chemical' | 'biological' | 'nuclear' | 'radiological' | 'explosive';
+
 @Component({
   selector: 'app-attack-table',
   standalone: true,
@@ -34,12 +36,15 @@ import { AttackTableService } from '../../services/attack-table.service';
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css'],
 })
+
 export class TableComponent implements OnInit {
+  
   records: any[] = [];
   newRecord: any = {
+    selectedType: '',
     typeofattacks: '',
     agents: '',
-    dateTime: '',
+    dateTime: null,
     payload: '',
     location: '',
     remarks: '',
@@ -53,16 +58,15 @@ export class TableComponent implements OnInit {
     'radiological',
     'explosive',
   ];
-  agentsMapping: { [key: string]: { label: string; value: string }[] } = {
+
+  agentsMapping = {
     chemical: [
       { label: 'VX Gas', value: 'VX Gas' },
       { label: 'Sarin', value: 'Sarin' },
-      { label: 'Ricin', value: 'Ricin' },
     ],
     biological: [
       { label: 'Anthrax', value: 'Anthrax' },
       { label: 'Smallpox', value: 'Smallpox' },
-      { label: 'Ebola', value: 'Ebola' },
     ],
     nuclear: [
       { label: 'Uranium', value: 'Uranium' },
@@ -70,15 +74,15 @@ export class TableComponent implements OnInit {
     ],
     radiological: [
       { label: 'Cesium-137', value: 'Cesium-137' },
-      { label: 'Cobalt-60', value: 'Cobalt-60' },
+      { label: 'Strontium-90', value: 'Strontium-90' },
     ],
     explosive: [
       { label: 'TNT', value: 'TNT' },
-      { label: 'C4', value: 'C4' },
+      { label: 'RDX', value: 'RDX' },
     ],
   };
 
-  filteredAgentsList: { label: string; value: string; }[] = [];
+  filteredAgentsList: any[] = [];
 
   payloadList = [
     { label: '5kg', value: '5kg' },
@@ -91,6 +95,7 @@ export class TableComponent implements OnInit {
     { label: 'Land', value: 'Land' },
     { label: 'Sea', value: 'Sea' },
   ];
+
   constructor(
     private attackTableService: AttackTableService,
     private router: Router
@@ -111,41 +116,82 @@ export class TableComponent implements OnInit {
     });
   }
 
-  addRecord(): void {
-    console.log("this.newRecord -------->>>", this.newRecord);
-    this.attackTableService.addRecord(this.newRecord).subscribe(() => {
-      this.loadRecords();
-      this.reset();
-    });
+  onTypeChange(): void {
+    const selectedType = this.newRecord.selectedType as AttackType;
+    if (this.agentsMapping[selectedType]) {
+      this.newRecord.typeofattacks = selectedType;
+      this.filteredAgentsList = this.agentsMapping[selectedType];
+    } else {
+      this.filteredAgentsList = [];
+    }
+    this.newRecord.agents = ''; // Reset agent selection
   }
 
+  addRecord(): void {
+    if (!this.newRecord.selectedType || !this.newRecord.dateTime || !this.newRecord.location) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+  
+    // Ensure the attack type is correctly assigned
+    this.newRecord.typeofattacks = this.newRecord.selectedType;
+  
+    // Generate a unique ID if not handled by the backend
+    const newEntry = {
+      ...this.newRecord,
+      id: this.records.length ? Math.max(...this.records.map(r => r.id || 0)) + 1 : 1, 
+    };
+  
+    console.log("New Record: ", newEntry);
+  
+    // Optimistically update UI
+    this.records = [...this.records, newEntry]; // Ensures Angular detects the change
+  
+    this.attackTableService.addRecord(newEntry).subscribe({
+      next: (savedRecord) => {
+        // If the backend returns a record, replace the placeholder entry
+        this.records = this.records.map(record =>
+          record.id === newEntry.id ? savedRecord : record
+        );
+        this.reset(); // Reset form after adding
+      },
+      error: (err) => {
+        console.error('Error adding record:', err);
+      },
+    });
+  }
+  
   editRecord(record: any): void {
     this.newRecord = { ...record };
-    this.updateAgentsList(); 
+    this.onTypeChange();
   }
 
   deleteRecord(id: number): void {
-    this.attackTableService.deleteRecord(id).subscribe(() => {
-      this.loadRecords();
+    this.attackTableService.deleteRecord(id).subscribe({
+      next: () => {
+        this.records = this.records.filter((r) => r.id !== id);
+      },
+      error: (err) => {
+        console.error('Error deleting record:', err);
+      },
     });
   }
 
   reset(): void {
     this.newRecord = {
+      selectedType: '',
       typeofattacks: '',
       agents: '',
-      dateTime: '',
+      dateTime: null,
       payload: '',
       location: '',
       remarks: '',
       delieverBy: '',
     };
-    this.filteredAgentsList = []; // Reset agent list
+    this.filteredAgentsList = [];
   }
 
-  updateAgentsList(): void {
-    this.filteredAgentsList =
-      this.agentsMapping[this.newRecord.typeofattacks] || [];
-    this.newRecord.agents = ''; 
+  next(): void {
+    this.router.navigate(['/next-component']);
   }
 }
